@@ -52,17 +52,16 @@ app.post('/createMem', async (req, res)=> {
     })
 })
 app.post('/userlogin', async (req, res)=>{
-    const { name, birth } = req.body;
+    const { name, phone } = req.body;
+    
     connection.query(`select * from members where name="${name}"`,
     (err, row)=>{
-        console.log(row)
         const result = row[0]
-        console.log(result);
         if(!err){
             if(!result){
                 res.send('id is undefined');
             }else{
-                if(birth !== result.birth){
+                if(phone !== result.phone){
                     res.send('pw is undefined');
                 }else{
                     res.send('login successed');
