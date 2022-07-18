@@ -51,6 +51,28 @@ app.post('/createMem', async (req, res)=> {
         res.send(`${name} 회원가입 성공`);
     })
 })
+app.post('/userlogin', async (req, res)=>{
+    const { name, birth } = req.body;
+    connection.query(`select * from members where name="${name}"`,
+    (err, row)=>{
+        console.log(row)
+        const result = row[0]
+        console.log(result);
+        if(!err){
+            if(!result){
+                res.send('id is undefined');
+            }else{
+                if(birth !== result.birth){
+                    res.send('pw is undefined');
+                }else{
+                    res.send('login successed');
+                }
+            }
+        }else{
+            console.log(err);
+        }
+    })
+})
 
 
 //요청 작성 종료
