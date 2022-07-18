@@ -52,36 +52,6 @@ app.post('/createMem', async (req, res)=> {
     })
 })
 
-app.post('/userlogin', async (req, res)=>{
-
-    const {name, birth} =  req.body;
-    connection.query(
-        //userId로 값을 찾는데 값의 컬럼 이름을 result로 받음. 컬럼에 나오는 결과값은 userId의 개수
-        `select * from members where name = '${name}'`,
-        (err, row) => {
-            const result = row[0];
-            //에러가 나지 않았을 때(정상적으로 값을 받아왔을 때)
-            if(!err){
-                if(!result){
-                    res.send('id is undefined');
-                    console.log(res);
-                }else{
-                    if(birth !== result.birth){
-                        res.send('pw is undefined');
-                        console.log(res);
-                    }else{
-                        res.send('login successed');
-                        console.log(res);
-                        sessionStorage.setItem("login", name);
-                    }
-                }
-            }else{
-                console.log(err);
-            }
-            
-        }
-    )
-})
 
 //요청 작성 종료
 
