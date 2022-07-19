@@ -37,10 +37,25 @@ app.get('/members', async (req, res)=> {
         }
     )
 })
+app.get('/rescheck/:name', async (req, res)=> {
+    const params = req.params.name;
+    connection.query(
+        `select * from Reservation where name="${params}"`,
+        (err, rows, fields)=>{
+            if(!rows){
+                console.log(err);
+            }
+            console.log(rows);
+            res.send(rows);
+        }
+    )
+})
 
 app.post('/createRes', async (req, res)=> {
     console.log(req.body);
-    connection.query("", (err, rows, fields)=>{
+    const { room, imgsrc, checkin, checkout, adult, kids, name} = req.body;
+    connection.query(`insert into Reservation(room, imgsrc, checkin, checkout, adult, kids, name) values("${room}","${imgsrc}","${checkin}","${checkout}","${adult}","${kids}","${name}")`, 
+    (err, rows, fields)=>{
         res.send(rows);
     })
 })
