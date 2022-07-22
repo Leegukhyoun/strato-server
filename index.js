@@ -23,7 +23,7 @@ app.use(cors());
 
 app.get('/reservation', async (req, res)=> {
     connection.query(
-        "select * from reservation",
+        "select * from Reservation",
         (err, rows, fields)=>{
             res.send(rows);
         }
