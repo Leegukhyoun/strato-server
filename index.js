@@ -1,11 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-<<<<<<< HEAD
 const port = process.env.PORT || 3001;
-=======
-const port = process.env.PORT || 8080;
->>>>>>> 566bdc6b69bb426aea53132e75c1d50442a535be
 const mysql = require("mysql");
 const fs = require("fs");
 
