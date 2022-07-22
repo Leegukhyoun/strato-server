@@ -37,6 +37,14 @@ app.get('/members', async (req, res)=> {
         }
     )
 })
+app.get('/herokutest', async (req, res)=> {
+    connection.query(
+        "select * from herokutest",
+        (err, rows, fields)=>{
+            res.send(rows);
+        }
+    )
+})
 app.get('/rescheck/:name', async (req, res)=> {
     const params = req.params.name;
     connection.query(
