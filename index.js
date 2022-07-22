@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 const mysql = require("mysql");
 const fs = require("fs");
 
@@ -23,7 +23,7 @@ app.use(cors());
 
 app.get('/reservation', async (req, res)=> {
     connection.query(
-        "select * from reservation",
+        "select * from Reservation",
         (err, rows, fields)=>{
             res.send(rows);
         }
@@ -37,10 +37,18 @@ app.get('/members', async (req, res)=> {
         }
     )
 })
+app.get('/herokutest', async (req, res)=> {
+    connection.query(
+        "select * from herokutest",
+        (err, rows, fields)=>{
+            res.send(rows);
+        }
+    )
+})
 app.get('/rescheck/:name', async (req, res)=> {
     const params = req.params.name;
     connection.query(
-        `select * from Reservation where name="${params}"`,
+        `select * from Reservation where name='${params}'`,
         (err, rows, fields)=>{
             if(!rows){
                 console.log(err);
