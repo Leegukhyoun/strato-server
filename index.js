@@ -48,7 +48,7 @@ app.get('/herokutest', async (req, res)=> {
 app.get('/rescheck/:name', async (req, res)=> {
     const params = req.params.name;
     connection.query(
-        `select * from Reservation where name="${params}"`,
+        `select * from Reservation where name='${params}'`,
         (err, rows, fields)=>{
             if(!rows){
                 console.log(err);
