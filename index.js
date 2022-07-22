@@ -88,6 +88,12 @@ app.post('/userlogin', async (req, res)=>{
     })
 })
 
+app.delete('/delres/:id', async (req, res) => {
+    const params = req.params;
+    connection.query(`delete from Reservation where id = ${params.id}`, (err, rows, fields) => {
+        res.send(rows);
+    })
+})
 
 //요청 작성 종료
 
