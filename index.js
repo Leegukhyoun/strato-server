@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3001;
 const mysql = require("mysql");
 const fs = require("fs");
 
@@ -37,10 +37,33 @@ app.get('/members', async (req, res)=> {
         }
     )
 })
+app.get('/herokutest', async (req, res)=> {
+    connection.query(
+        "select * from herokutest",
+        (err, rows, fields)=>{
+            res.send(rows);
+        }
+    )
+})
+app.get('/rescheck/:name', async (req, res)=> {
+    const params = req.params.name;
+    connection.query(
+        `select * from Reservation where name='${params}'`,
+        (err, rows, fields)=>{
+            if(!rows){
+                console.log(err);
+            }
+            console.log(rows);
+            res.send(rows);
+        }
+    )
+})
 
 app.post('/createRes', async (req, res)=> {
     console.log(req.body);
-    connection.query("", (err, rows, fields)=>{
+    const { room, imgsrc, checkin, checkout, adult, kids, name} = req.body;
+    connection.query(`insert into Reservation(room, imgsrc, checkin, checkout, adult, kids, name) values("${room}","${imgsrc}","${checkin}","${checkout}","${adult}","${kids}","${name}")`, 
+    (err, rows, fields)=>{
         res.send(rows);
     })
 })
@@ -51,36 +74,33 @@ app.post('/createMem', async (req, res)=> {
         res.send(`${name} 회원가입 성공`);
     })
 })
-
 app.post('/userlogin', async (req, res)=>{
-
-    const {name, birth} =  req.body;
-    connection.query(
-        //userId로 값을 찾는데 값의 컬럼 이름을 result로 받음. 컬럼에 나오는 결과값은 userId의 개수
-        `select * from members where name = '${name}'`,
-        (err, row) => {
-            const result = row[0];
-            //에러가 나지 않았을 때(정상적으로 값을 받아왔을 때)
-            if(!err){
-                if(!result){
-                    res.send('id is undefined');
-                    console.log(res);
-                }else{
-                    if(birth !== result.birth){
-                        res.send('pw is undefined');
-                        console.log(res);
-                    }else{
-                        res.send('login successed');
-                        console.log(res);
-                        sessionStorage.setItem("login", name);
-                    }
-                }
+    const { name, phone } = req.body;
+    
+    connection.query(`select * from members where name="${name}"`,
+    (err, row)=>{
+        const result = row[0]
+        if(!err){
+            if(!result){
+                res.send('id is undefined');
             }else{
-                console.log(err);
+                if(phone !== result.phone){
+                    res.send('pw is undefined');
+                }else{
+                    res.send('login successed');
+                }
             }
-            
+        }else{
+            console.log(err);
         }
-    )
+    })
+})
+
+app.delete('/delres/:id', async (req, res) => {
+    const params = req.params;
+    connection.query(`delete from Reservation where id = ${params.id}`, (err, rows, fields) => {
+        res.send(rows);
+    })
 })
 
 //요청 작성 종료
